@@ -1401,6 +1401,52 @@ def otsu(image, selem, out=None, mask=None,
                                           shift_x=shift_x, shift_y=shift_y,
                                           shift_z=shift_z)
 
+def otsu_sigma_b(image, selem, out=None, mask=None,
+         shift_x=False, shift_y=False, shift_z=False):
+    """Local between class variance as maximized in Otsu's method.
+
+    Parameters
+    ----------
+    image : ([P,] M, N) ndarray (uint8, uint16)
+        Input image.
+    selem : ndarray
+        The neighborhood expressed as an ndarray of 1's and 0's.
+    out : ([P,] M, N) array (same dtype as input)
+        If None, a new array is allocated.
+    mask : ndarray (integer or float), optional
+        Mask array that defines (>0) area of the image included in the local
+        neighborhood. If None, the complete image is used (default).
+    shift_x, shift_y, shift_z : int
+        Offset added to the structuring element center point. Shift is bounded
+        to the structuring element sizes (center must be inside the given
+        structuring element).
+
+    Returns
+    -------
+    out : ([P,] M, N) ndarray (same dtype as input image)
+        Output image.
+
+    References
+    ----------
+    .. [1] https://en.wikipedia.org/wiki/Otsu's_method
+
+    Examples
+    --------
+    
+
+    """
+
+    np_image = np.asanyarray(image)
+    if np_image.ndim == 2:
+        return _apply_scalar_per_pixel(generic_cy._otsu_sigma_b, image, selem,
+                                       out=out, mask=mask,
+                                       shift_x=shift_x, shift_y=shift_y)
+    else:
+        return _apply_scalar_per_pixel_3D(generic_cy._otsu_3D, image,
+                                          selem, out=out, mask=mask,
+                                          shift_x=shift_x, shift_y=shift_y,
+                                          shift_z=shift_z)
+
 
 def windowed_histogram(image, selem, out=None, mask=None,
                        shift_x=False, shift_y=False, n_bins=None):

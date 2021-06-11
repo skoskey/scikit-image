@@ -1,7 +1,7 @@
 from .generic import (autolevel, bottomhat, equalize, gradient, majority,
                       maximum, mean, geometric_mean, subtract_mean,
                       median, minimum, modal, enhance_contrast, pop,
-                      threshold, tophat, noise_filter, entropy, otsu,
+                      threshold, tophat, noise_filter, entropy, otsu, otsu_sigma_b,
                       sum, windowed_histogram)
 from ._percentile import (autolevel_percentile, gradient_percentile,
                           mean_percentile, subtract_mean_percentile,
@@ -41,6 +41,7 @@ __all__ = ['autolevel',
            'noise_filter',
            'entropy',
            'otsu',
+           'otsu_sigma_b',
            'percentile',
            'windowed_histogram']
 
