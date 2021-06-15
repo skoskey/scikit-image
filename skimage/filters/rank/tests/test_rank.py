@@ -571,6 +571,23 @@ class TestRank():
         th = 1 * (test >= rank.otsu(test, selem))
         assert_equal(th, res)
 
+    def test_otsu_sigma_b(self):
+        # test the local Otsu between-class variance on a synthetic image
+        # (left to right ramp * sinus)
+
+        test = np.tile([128, 145, 103, 127, 165, 83, 127, 185, 63, 127, 205, 43,
+                        127, 225, 23, 127],
+                       (16, 1))
+        test = test.astype(np.uint8)
+
+        # UPDATE: I need to figure out what the true answer is and add it here
+        res = np.tile([1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1], (16, 1))
+        
+        selem = np.ones((6, 6), dtype=np.uint8)
+        sigmas = rank.otsu_sigma_b(test, selem)
+        assert_equal(sigmas, res)
+
+
     def test_entropy(self):
         #  verify that entropy is coherent with bitdepth of the input data
 

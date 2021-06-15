@@ -1440,7 +1440,8 @@ def otsu_sigma_b(image, selem, out=None, mask=None,
     if np_image.ndim == 2:
         return _apply_scalar_per_pixel(generic_cy._otsu_sigma_b, image, selem,
                                        out=out, mask=mask,
-                                       shift_x=shift_x, shift_y=shift_y)
+                                       shift_x=shift_x, shift_y=shift_y,
+                                       out_dtype=np.double)
     else:
         return _apply_scalar_per_pixel_3D(generic_cy._otsu_3D, image,
                                           selem, out=out, mask=mask,
