@@ -429,6 +429,7 @@ cdef inline void _kernel_otsu_sigma_b(dtype_t_out* out, Py_ssize_t odepth,
     cdef Py_ssize_t max_i
     cdef Py_ssize_t P, q1, mu1, mu2, mu = 0
     cdef double sigma_b, max_sigma_b, t
+    cdef double norm_factor
 
     # compute local mean
     if pop:
@@ -437,6 +438,9 @@ cdef inline void _kernel_otsu_sigma_b(dtype_t_out* out, Py_ssize_t odepth,
     else:
         out[0] = <dtype_t_out>0
         return
+
+    # we'll normalize by with respect to neighborhood size
+    norm_factor = pop**2 #num pixels in the neighborhood^2
 
     # maximizing the between class variance
     max_i = 0
@@ -458,6 +462,7 @@ cdef inline void _kernel_otsu_sigma_b(dtype_t_out* out, Py_ssize_t odepth,
         mu2 = mu - mu1
         t = (pop - q1) * mu1 - mu2 * q1
         sigma_b = (t * t) / (q1 * (pop - q1))
+        sigma_b = sigma_b / norm_factor
         if sigma_b > max_sigma_b:
             max_sigma_b = sigma_b
             max_i = i
