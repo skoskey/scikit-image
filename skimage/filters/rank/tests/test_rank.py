@@ -575,15 +575,18 @@ class TestRank():
         # test the local Otsu between-class variance on a synthetic image
         # (left to right ramp * sinus)
 
-        test = np.tile([128, 145, 103, 127, 165, 83, 127, 185, 63, 127, 205, 43,
-                        127, 225, 23, 127],
-                       (16, 1))
-        test = test.astype(np.uint8)
+        test = np.array([[55, 55, 47, 175, 160],
+                         [60, 90, 40, 190, 161],
+                         [150, 210, 190, 190, 100],
+                         [96, 175, 205, 230, 125]], dtype='ubyte')
 
-        # UPDATE: I need to figure out what the true answer is and add it here
-        res = np.tile([1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1], (16, 1))
+        # Hand-computed maximum between-class variance for each pixel
+        res = np.array([[50/9,        (113**2)/48,  (383**2)/48,  3072,       (29**2)/18],
+                        [(245**2)/48, (595**2)/100,  4118.64,     3091.36,    (211**2)/48],
+                        [2601,         1332.25,      4032.25,     1600,        992.25],
+                        [(133**2)/18, (302**2)/48,  (35**2)/4,   (250**2)/48, (235**2)/18]])
         
-        selem = np.ones((6, 6), dtype=np.uint8)
+        selem = disk(radius=1)
         sigmas = rank.otsu_sigma_b(test, selem)
         assert_equal(sigmas, res)
 
