@@ -126,7 +126,7 @@ class TestRank():
                             'majority', 'maximum', 'mean', 'geometric_mean',
                             'subtract_mean', 'median', 'minimum', 'modal',
                             'enhance_contrast', 'pop', 'sum', 'threshold',
-                            'noise_filter', 'entropy'])
+                            'noise_filter', 'entropy', 'otsu_sigma_b'])
     def test_rank_filters_3D(self, filter):
         @test_parallel(warnings_matching=['Possible precision loss'])
         def check():
@@ -573,7 +573,6 @@ class TestRank():
 
     def test_otsu_sigma_b(self):
         # test the local Otsu between-class variance on a synthetic image
-        # (left to right ramp * sinus)
 
         test = np.array([[55, 55, 47, 175, 160],
                          [60, 90, 40, 190, 161],
